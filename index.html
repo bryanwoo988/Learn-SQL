@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SQL Syntax</title>
+  <meta name="description" content="SQL Syntax · SQL语言 — learn SQL interactively with 7 lessons and 50 practice problems. 互动式 SQL 学习应用。">
+  <meta name="theme-color" content="#FFE600">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SQL Syntax">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta property="og:title" content="SQL Syntax · SQL语言">
+  <meta property="og:description" content="Learn SQL interactively — 50 problems, bilingual EN/中文.">
+  <meta property="og:image" content="icons/icon-512.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#/"><img src="icons/icon-32.png" alt="" width="28" height="28"><span id="brandName">SQL Syntax</span></a>
+    <nav class="tabs-top" aria-label="Main">
+      <a href="#/" data-nav="navHome"><span>Home</span></a>
+      <a href="#/learn" data-nav="navLearn"><span>Learn</span></a>
+      <a href="#/practice" data-nav="navPractice"><span>Practice</span></a>
+      <a href="#/playground" data-nav="navPlay"><span>Playground</span></a>
+    </nav>
+    <div class="top-actions">
+      <button class="btn small primary" id="installBtn" hidden>Install</button>
+      <button class="icon-btn" id="langBtn" aria-label="Switch language">中文</button>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">🌓</button>
+    </div>
+  </header>
+
+  <main id="view" class="wrap"></main>
+
+  <nav class="bottom-nav" aria-label="Main">
+    <a href="#/" data-nav="navHome"><b>🏠</b><span>Home</span></a>
+    <a href="#/learn" data-nav="navLearn"><b>📖</b><span>Learn</span></a>
+    <a href="#/practice" data-nav="navPractice"><b>✍️</b><span>Practice</span></a>
+    <a href="#/playground" data-nav="navPlay"><b>🧪</b><span>Playground</span></a>
+  </nav>
+
+  <script src="vendor/sql-wasm.js"></script>
+  <script src="js/sqlcompat.js"></script>
+  <script src="js/problems.js"></script>
+  <script src="js/lessons.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
