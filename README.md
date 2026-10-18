@@ -3,6 +3,8 @@
 An interactive, bilingual (English / 中文) Progressive Web App for learning SQL. Its structure follows the
 [LeetCode Top SQL 50](https://leetcode.com/studyplan/top-sql-50/) study plan.
 
+**Live app:** https://bryanwoo988.github.io/Learn-SQL/
+
 ## Features
 - **7 lessons**, one per study-plan topic: Select, Basic Joins, Aggregates, Sorting & Grouping, Advanced Select & Joins, Subqueries, and String/Regex/Clause. Every example can be edited and run, and each lesson ends with a short quiz.
 - **50 practice problems** with sample tables, a syntax-highlighted editor, Run / Submit, progressive hints, a reference solution with explanation, and a link to the original LeetCode problem. Answers are checked against the expected output; some problems also have hidden edge cases.
