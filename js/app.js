@@ -45,6 +45,10 @@
     resetProgress: { en: 'Reset progress', zh: '重置进度' }, resetConfirm: { en: 'Erase all progress and saved code?', zh: '要清除所有进度和保存的代码吗？' },
     close: { en: 'Close', zh: '关闭' }, shortcut: { en: 'Ctrl/⌘ + Enter to run', zh: 'Ctrl/⌘ + Enter 运行' },
     offlineReady: { en: 'Ready to work offline', zh: '已可离线使用' },
+    iosInstall: {
+      en: '<ol><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (square with an up arrow).</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol><p class="muted small">The app then opens full-screen from your home screen and works offline.</p>',
+      zh: '<ol><li>用 <b>Safari</b> 打开本页。</li><li>点 <b>分享</b> 按钮（方框加向上箭头）。</li><li>选择 <b>添加到主屏幕</b>，再点 <b>添加</b>。</li></ol><p class="muted small">之后从主屏幕打开即为全屏 App，并可离线使用。</p>'
+    },
     aboutBody: {
       en: '<p>An interactive SQL course that follows the structure of the <a href="https://leetcode.com/studyplan/top-sql-50/" target="_blank" rel="noopener">LeetCode Top SQL 50</a> study plan. Problem statements and data here are written for this app; each problem links to the original on LeetCode.</p><p><b>Engine.</b> Queries run locally in your browser with SQLite (sql.js, WebAssembly). Nothing is sent to a server, and the app works offline once installed.</p><p><b>MySQL compatibility.</b> LeetCode uses MySQL, so common MySQL features are emulated: <code>/</code> returns decimals, <code>IF()</code>, <code>DATEDIFF()</code>, <code>DATE_ADD/DATE_SUB(… INTERVAL n DAY)</code>, <code>DATE_FORMAT()</code>, <code>YEAR()/MONTH()</code>, <code>LEFT()/RIGHT()</code>, <code>CHAR_LENGTH()</code>, <code>MOD()</code>, <code>REGEXP</code>, <code>GROUP_CONCAT(… SEPARATOR …)</code>.</p><p><b>Known differences.</b> SQLite does not support multi-table <code>DELETE</code>/<code>UPDATE</code>, parentheses around <code>UNION</code> members, or variables like <code>@x</code>. String comparison with <code>=</code> is case-sensitive in SQLite.</p>',
       zh: '<p>一个互动式 SQL 课程，结构参照 <a href="https://leetcode.com/studyplan/top-sql-50/" target="_blank" rel="noopener">LeetCode 高频 SQL 50 题</a> 学习计划。本应用的题目描述和数据均为重新编写，每题都附有 LeetCode 原题链接。</p><p><b>引擎。</b>查询在浏览器本地通过 SQLite（sql.js，WebAssembly）运行，不会发送到服务器；安装后可离线使用。</p><p><b>MySQL 兼容。</b>LeetCode 使用 MySQL，因此本应用模拟了常用的 MySQL 特性：<code>/</code> 返回小数、<code>IF()</code>、<code>DATEDIFF()</code>、<code>DATE_ADD/DATE_SUB(… INTERVAL n DAY)</code>、<code>DATE_FORMAT()</code>、<code>YEAR()/MONTH()</code>、<code>LEFT()/RIGHT()</code>、<code>CHAR_LENGTH()</code>、<code>MOD()</code>、<code>REGEXP</code>、<code>GROUP_CONCAT(… SEPARATOR …)</code>。</p><p><b>已知差异。</b>SQLite 不支持多表 <code>DELETE</code>/<code>UPDATE</code>、给 <code>UNION</code> 的各部分加括号、以及 <code>@x</code> 这样的变量。SQLite 中用 <code>=</code> 比较字符串区分大小写。</p>'
@@ -628,15 +632,28 @@
   };
 
   // install prompt
+  // Chromium offers a native prompt; iOS Safari has none, so explain "Add to Home Screen" instead.
   let deferredPrompt = null;
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  $('#installBtn').hidden = standalone || !isIOS;
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('#installBtn').hidden = false; });
+  window.addEventListener('appinstalled', () => { $('#installBtn').hidden = true; });
   $('#installBtn').onclick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) { showIOSInstall(); return; }
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
     deferredPrompt = null;
     $('#installBtn').hidden = true;
   };
+  function showIOSInstall() {
+    const m = h(`<div class="modal" role="dialog" aria-modal="true"><div class="modal-card card">
+      <h2>${t('install')} ${t('appName')}</h2>${STR.iosInstall[lang]}
+      <div class="right"><button class="btn primary">${t('close')}</button></div></div></div>`);
+    document.body.appendChild(m);
+    $('button', m).onclick = () => m.remove();
+    m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+  }
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', () => {
