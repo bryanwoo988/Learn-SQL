@@ -49,6 +49,22 @@
       en: '<ol><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (square with an up arrow).</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol><p class="muted small">The app then opens full-screen from your home screen and works offline.</p>',
       zh: '<ol><li>用 <b>Safari</b> 打开本页。</li><li>点 <b>分享</b> 按钮（方框加向上箭头）。</li><li>选择 <b>添加到主屏幕</b>，再点 <b>添加</b>。</li></ol><p class="muted small">之后从主屏幕打开即为全屏 App，并可离线使用。</p>'
     },
+    settings: { en: 'Settings', zh: '设置' }, language: { en: 'Language', zh: '语言' },
+    appearance: { en: 'Appearance', zh: '外观' }, mode: { en: 'Mode', zh: '模式' },
+    modeSystem: { en: 'System', zh: '跟随系统' }, modeLight: { en: 'Light', zh: '浅色' }, modeDark: { en: 'Dark', zh: '深色' },
+    lightTheme: { en: 'Light theme', zh: '浅色主题' }, darkTheme: { en: 'Dark theme', zh: '深色主题' },
+    th_classic: { en: 'Classic', zh: '经典' }, th_paper: { en: 'Paper', zh: '纸张' }, th_mint: { en: 'Mint', zh: '薄荷' }, th_lavender: { en: 'Lavender', zh: '薰衣草' },
+    th_midnight: { en: 'Midnight', zh: '午夜' }, th_oled: { en: 'OLED Black', zh: '纯黑 OLED' }, th_slate: { en: 'Slate', zh: '石板' }, th_grape: { en: 'Grape', zh: '葡萄' },
+    themeNote: { en: 'In System mode the app follows your phone: the light theme by day, the dark theme at night.', zh: '「跟随系统」时，手机为浅色就用浅色主题，为深色就用深色主题。' },
+    share: { en: 'Share this app', zh: '分享本应用' }, shareHint: { en: 'Scan the QR code to open the app on another phone.', zh: '扫描二维码即可在另一部手机上打开本应用。' },
+    shareBtn: { en: 'Share link', zh: '分享链接' }, copyLink: { en: 'Copy link', zh: '复制链接' }, copied: { en: 'Link copied', zh: '链接已复制' },
+    installApp: { en: 'Install app', zh: '安装应用' }, installedNote: { en: 'Installed — you are using the app version.', zh: '已安装——你正在使用 App 版本。' },
+    installHint: { en: 'Add it to your home screen for full-screen, offline use.', zh: '添加到主屏幕，即可全屏并离线使用。' },
+    info: { en: 'App info', zh: '应用信息' }, version: { en: 'Version', zh: '版本' }, history: { en: 'Update history', zh: '更新记录' },
+    checkUpdate: { en: 'Check for updates', zh: '检查更新' }, upToDate: { en: 'You have the latest version.', zh: '已是最新版本。' },
+    downloading: { en: 'Downloading the new version…', zh: '正在下载新版本…' }, offline: { en: 'Offline use', zh: '离线使用' },
+    offlineYes: { en: 'Ready', zh: '已就绪' }, offlineNo: { en: 'Not yet — open the app online once', zh: '尚未——请在联网时打开一次' },
+    progressData: { en: 'Progress', zh: '学习进度' },
     aboutBody: {
       en: '<p>An interactive SQL course that follows the structure of the <a href="https://leetcode.com/studyplan/top-sql-50/" target="_blank" rel="noopener">LeetCode Top SQL 50</a> study plan. Problem statements and data here are written for this app; each problem links to the original on LeetCode.</p><p><b>Engine.</b> Queries run locally in your browser with SQLite (sql.js, WebAssembly). Nothing is sent to a server, and the app works offline once installed.</p><p><b>MySQL compatibility.</b> LeetCode uses MySQL, so common MySQL features are emulated: <code>/</code> returns decimals, <code>IF()</code>, <code>DATEDIFF()</code>, <code>DATE_ADD/DATE_SUB(… INTERVAL n DAY)</code>, <code>DATE_FORMAT()</code>, <code>YEAR()/MONTH()</code>, <code>LEFT()/RIGHT()</code>, <code>CHAR_LENGTH()</code>, <code>MOD()</code>, <code>REGEXP</code>, <code>GROUP_CONCAT(… SEPARATOR …)</code>.</p><p><b>Known differences.</b> SQLite does not support multi-table <code>DELETE</code>/<code>UPDATE</code>, parentheses around <code>UNION</code> members, or variables like <code>@x</code>. String comparison with <code>=</code> is case-sensitive in SQLite.</p>',
       zh: '<p>一个互动式 SQL 课程，结构参照 <a href="https://leetcode.com/studyplan/top-sql-50/" target="_blank" rel="noopener">LeetCode 高频 SQL 50 题</a> 学习计划。本应用的题目描述和数据均为重新编写，每题都附有 LeetCode 原题链接。</p><p><b>引擎。</b>查询在浏览器本地通过 SQLite（sql.js，WebAssembly）运行，不会发送到服务器；安装后可离线使用。</p><p><b>MySQL 兼容。</b>LeetCode 使用 MySQL，因此本应用模拟了常用的 MySQL 特性：<code>/</code> 返回小数、<code>IF()</code>、<code>DATEDIFF()</code>、<code>DATE_ADD/DATE_SUB(… INTERVAL n DAY)</code>、<code>DATE_FORMAT()</code>、<code>YEAR()/MONTH()</code>、<code>LEFT()/RIGHT()</code>、<code>CHAR_LENGTH()</code>、<code>MOD()</code>、<code>REGEXP</code>、<code>GROUP_CONCAT(… SEPARATOR …)</code>。</p><p><b>已知差异。</b>SQLite 不支持多表 <code>DELETE</code>/<code>UPDATE</code>、给 <code>UNION</code> 的各部分加括号、以及 <code>@x</code> 这样的变量。SQLite 中用 <code>=</code> 比较字符串区分大小写。</p>'
@@ -248,48 +264,40 @@
     const next = PROBLEMS.find(p => !progress.solved[p.id]);
     const v = view();
     v.innerHTML = `
-      <section class="hero">
-        <img src="icons/icon-192.png" alt="" class="hero-logo" width="88" height="88">
-        <div>
-          <h1>${t('appName')}</h1>
-          <p class="muted">${t('tagline')}</p>
+      <section class="hero card">
+        <div class="hero-top">
+          <img src="icons/icon-192.png" alt="" class="hero-logo" width="72" height="72">
+          <div>
+            <h1>${t('appName')}</h1>
+            <p class="muted">${t('tagline')}</p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat">${ring(solved / PROBLEMS.length, `${solved}/${PROBLEMS.length}`)}<div>${t('solved')}</div></div>
+          <div class="stat">${ring(lessonsDone / SECTIONS.length, `${lessonsDone}/${SECTIONS.length}`)}<div>${t('lessons')}</div></div>
         </div>
       </section>
-      <section class="stats">
-        <div class="stat card">${ring(solved / PROBLEMS.length, `${solved}/${PROBLEMS.length}`)}<div>${t('solved')}</div></div>
-        <div class="stat card">${ring(lessonsDone / SECTIONS.length, `${lessonsDone}/${SECTIONS.length}`)}<div>${t('lessons')}</div></div>
-        <div class="stat card next">
-          ${next ? `<div class="muted small">${t('nextUp')}</div>
-            <div class="next-title">${next.id}. ${esc(tr(next.title))}</div>
-            ${levelBadge(next.level)}
-            <a class="btn primary" href="#/problem/${next.id}">${t('continue')} →</a>`
-          : `<div class="next-title">🎉 ${t('allDone')}</div>`}
-        </div>
-      </section>
+      <a class="card next-card" href="${next ? '#/problem/' + next.id : '#/practice'}">
+        ${next ? `<span class="next-icon">${icon('flag')}</span>
+          <span class="next-body"><span class="muted small">${t('nextUp')}</span>
+            <span class="next-title">${next.id}. ${esc(tr(next.title))}</span>${levelBadge(next.level)}</span>
+          <span class="btn primary">${t('continue')} ${icon('chevron')}</span>`
+        : `<span class="next-icon">${icon('trophy')}</span><span class="next-body"><span class="next-title">${t('allDone')}</span></span>`}
+      </a>
       <h2>${t('studyPlan')}</h2>
       <p class="muted">${t('learnThen')}</p>
       <section class="sec-grid">
         ${SECTIONS.map((s, i) => {
           const st = sectionStats(s.id);
           return `<div class="card sec-card">
-            <div class="sec-head"><span class="sec-icon">${s.icon}</span><span class="muted small">${i + 1} / ${SECTIONS.length}</span>${progress.lessons[s.id] ? '<span class="tick" title="lesson done">✓</span>' : ''}</div>
+            <div class="sec-head"><span class="sec-icon">${icon(s.icon)}</span><span class="muted small">${i + 1} / ${SECTIONS.length}</span>${progress.lessons[s.id] ? `<span class="tick" title="lesson done">${icon('check')}</span>` : ''}</div>
             <h3>${esc(tr(s.title))}</h3>
             <div class="bar"><span style="width:${(st.done / st.total) * 100}%"></span></div>
             <div class="muted small">${st.done}/${st.total} ${t('solved')}</div>
             <div class="sec-actions"><a class="btn" href="#/learn/${s.id}">${t('navLearn')}</a><a class="btn ghost" href="#/practice/${s.id}">${t('navPractice')}</a></div>
           </div>`;
         }).join('')}
-      </section>
-      <footer class="foot">
-        <button class="link" id="aboutBtn">${t('about')}</button> ·
-        <button class="link danger" id="resetBtn">${t('resetProgress')}</button>
-      </footer>`;
-    $('#aboutBtn', v).onclick = showAbout;
-    $('#resetBtn', v).onclick = () => {
-      if (!confirm(t('resetConfirm'))) return;
-      progress.solved = {}; progress.lessons = {}; progress.drafts = {};
-      saveProgress(); render();
-    };
+      </section>`;
   }
 
   function showAbout() {
@@ -305,7 +313,7 @@
   function renderLearnIndex() {
     view().innerHTML = `<h1>${t('navLearn')}</h1><section class="sec-grid">
       ${SECTIONS.map((s, i) => `<a class="card sec-card link-card" href="#/learn/${s.id}">
-        <div class="sec-head"><span class="sec-icon">${s.icon}</span><span class="muted small">${i + 1}</span>${progress.lessons[s.id] ? '<span class="tick">✓</span>' : ''}</div>
+        <div class="sec-head"><span class="sec-icon">${icon(s.icon)}</span><span class="muted small">${i + 1}</span>${progress.lessons[s.id] ? `<span class="tick">${icon('check')}</span>` : ''}</div>
         <h3>${esc(tr(s.title))}</h3>
         <div class="muted small">${LESSONS[s.id].cards.length} ${t('concepts').toLowerCase()} · ${LESSONS[s.id].quiz.length} quiz</div>
       </a>`).join('')}</section>`;
@@ -333,14 +341,14 @@
     const v = view();
     v.innerHTML = `
       <nav class="crumbs"><a href="#/learn">${t('navLearn')}</a> › ${esc(tr(sec.title))}</nav>
-      <h1>${sec.icon} ${esc(tr(sec.title))}</h1>
+      <h1 class="with-icon"><span class="sec-icon">${icon(sec.icon)}</span>${esc(tr(sec.title))}</h1>
       <p class="lead">${tr(L.intro)}</p>
       <div id="cards"></div>
-      <h2>📝 ${t('quiz')}</h2>
+      <h2 class="with-icon">${icon('quiz')} ${t('quiz')}</h2>
       <div id="quiz"></div>
       <div class="card cta">
         <div>${t('practiceSection')}: <b>${esc(tr(sec.title))}</b> (${sectionStats(secId).done}/${sectionStats(secId).total})</div>
-        <a class="btn primary" href="#/practice/${secId}">${t('navPractice')} →</a>
+        <a class="btn primary" href="#/practice/${secId}">${t('navPractice')} ${icon('chevron')}</a>
       </div>
       <div class="pager">
         ${idx > 0 ? `<a class="btn ghost" href="#/learn/${SECTIONS[idx - 1].id}">← ${esc(tr(SECTIONS[idx - 1].title))}</a>` : '<span></span>'}
@@ -354,7 +362,7 @@
         <h3><span class="step">${i + 1}</span> ${tr(c.title)}</h3>
         <p>${tr(c.body)}</p>
         <div class="ed"></div>
-        <div class="row"><button class="btn primary run">▶ ${t('run')}</button><button class="btn ghost rst">${t('reset')}</button><span class="muted small kbd">${t('shortcut')}</span></div>
+        <div class="row"><button class="btn primary run">${icon('play', 'fill')} ${t('run')}</button><button class="btn ghost rst">${icon('reset')} ${t('reset')}</button><span class="muted small kbd">${t('shortcut')}</span></div>
         <div class="out"></div>
       </article>`);
       cards.appendChild(card);
@@ -381,10 +389,10 @@
         const ok = i === q.answer;
         b.classList.add(ok ? 'right' : 'wrongc');
         if (ok) answered[qi] = true;
-        $('.why', box).innerHTML = `<b>${ok ? '✅ ' + t('correct') : '❌ ' + t('incorrect')}</b> ${ok ? tr(q.why) : ''}`;
+        $('.why', box).innerHTML = `<b class="${ok ? 'good' : 'badc'}">${icon(ok ? 'check' : 'x')} ${ok ? t('correct') : t('incorrect')}</b> ${ok ? tr(q.why) : ''}`;
         if (Object.keys(answered).length === L.quiz.length && !progress.lessons[secId]) {
           progress.lessons[secId] = true; saveProgress();
-          toast('🎓 ' + t('quizDone'), 'ok');
+          toast(t('quizDone'), 'ok');
         }
       });
     });
@@ -408,11 +416,11 @@
           .filter(p => !q || String(p.id).includes(q) || p.title.en.toLowerCase().includes(q) || p.title.zh.includes(q));
         if (!ps.length) return '';
         const st = sectionStats(s.id);
-        return `<section class="plist-sec"><h2>${s.icon} ${esc(tr(s.title))} <span class="muted small">${st.done}/${st.total}</span>
-            <a class="small" href="#/learn/${s.id}">${t('navLearn')} →</a></h2>
+        return `<section class="plist-sec"><h2><span class="sec-icon sm">${icon(s.icon)}</span>${esc(tr(s.title))} <span class="muted small">${st.done}/${st.total}</span>
+            <a class="small" href="#/learn/${s.id}">${t('navLearn')} ${icon('chevron')}</a></h2>
           <ul class="plist">${ps.map(p => `<li><a href="#/problem/${p.id}">
-            <span class="status ${progress.solved[p.id] ? 'done' : ''}">${progress.solved[p.id] ? '✓' : ''}</span>
-            <span class="pid">${p.id}</span><span class="ptitle">${esc(tr(p.title))}</span>${levelBadge(p.level)}</a></li>`).join('')}</ul></section>`;
+            <span class="status ${progress.solved[p.id] ? 'done' : ''}">${progress.solved[p.id] ? icon('check') : ''}</span>
+            <span class="pid">${p.id}</span><span class="ptitle">${esc(tr(p.title))}</span>${levelBadge(p.level)}${icon('chevron', 'go')}</a></li>`).join('')}</ul></section>`;
       }).join('') || `<p class="muted">—</p>`;
     };
     draw();
@@ -440,9 +448,9 @@
       <nav class="crumbs"><a href="#/practice">${t('navPractice')}</a> › <a href="#/practice/${sec.id}">${esc(tr(sec.title))}</a></nav>
       <div class="prob-layout">
         <div class="prob-desc">
-          <h1>${p.id}. ${esc(tr(p.title))} ${progress.solved[p.id] ? '<span class="tick">✓</span>' : ''}</h1>
+          <h1>${p.id}. ${esc(tr(p.title))} ${progress.solved[p.id] ? `<span class="tick">${icon('check')}</span>` : ''}</h1>
           <div class="meta">${levelBadge(p.level)}<span class="muted small">${p.ordered ? t('mustOrder') : t('anyOrder')}</span>
-            <a class="small" href="https://leetcode.com/problems/${p.slug}/" target="_blank" rel="noopener">${t('openLeetcode')} ↗</a></div>
+            <a class="small" href="https://leetcode.com/problems/${p.slug}/" target="_blank" rel="noopener">${t('openLeetcode')} ${icon('external')}</a></div>
           <div class="desc">${tr(p.desc)}</div>
           <h3>${t('tables')}</h3>
           <div class="tabs">${p.tables.map((tb, k) => `<button class="tab ${k ? '' : 'on'}" data-k="${k}">${esc(tb.name)}</button>`).join('')}</div>
@@ -454,11 +462,11 @@
         <div class="prob-work">
           <div id="ed"></div>
           <div class="row actions">
-            <button class="btn" id="runBtn">▶ ${t('run')}</button>
-            <button class="btn primary" id="subBtn">✔ ${t('submit')}</button>
-            <button class="btn ghost" id="hintBtn">💡 ${t('hint')}</button>
-            <button class="btn ghost" id="solBtn">🔑 ${t('solution')}</button>
-            <button class="btn ghost" id="rstBtn">${t('reset')}</button>
+            <button class="btn" id="runBtn">${icon('play', 'fill')} ${t('run')}</button>
+            <button class="btn primary" id="subBtn">${icon('check')} ${t('submit')}</button>
+            <button class="btn ghost" id="hintBtn">${icon('bulb')} ${t('hint')}</button>
+            <button class="btn ghost" id="solBtn">${icon('key')} ${t('solution')}</button>
+            <button class="btn ghost" id="rstBtn">${icon('reset')} ${t('reset')}</button>
           </div>
           <div class="muted small kbd">${t('shortcut')}</div>
           <div id="verdict"></div>
@@ -466,9 +474,9 @@
         </div>
       </div>
       <div class="pager">
-        ${prev ? `<a class="btn ghost" href="#/problem/${prev.id}">← ${t('prev')}</a>` : '<span></span>'}
+        ${prev ? `<a class="btn ghost" href="#/problem/${prev.id}">${icon('arrowLeft')} ${t('prev')}</a>` : '<span></span>'}
         <a class="btn ghost" href="#/practice">${t('backList')}</a>
-        ${next ? `<a class="btn ghost" href="#/problem/${next.id}">${t('next')} →</a>` : '<span></span>'}
+        ${next ? `<a class="btn ghost" href="#/problem/${next.id}">${t('next')} ${icon('chevron')}</a>` : '<span></span>'}
       </div>`;
 
     v.querySelectorAll('.tab').forEach(b => b.onclick = () => {
@@ -500,27 +508,27 @@
         const r = runProblem(p, sql, k ? p.extra[k - 1] : null);
         const exp = expectedFor(p, k);
         if (r.error) {
-          verdict.innerHTML = `<div class="verdict bad">❌ ${t('error')}</div>`;
+          verdict.innerHTML = `<div class="verdict bad">${icon('x')} ${t('error')}</div>`;
           out.innerHTML = `<div class="err">${esc(r.error)}</div>`;
           return;
         }
         const c = compare(r.set, exp, p.ordered);
         if (!c.ok) {
-          verdict.innerHTML = `<div class="verdict bad">❌ ${t('wrong')}<div class="small">${esc(c.msg)}${k ? ' ' + t('extraCase') : ''}</div></div>`;
+          verdict.innerHTML = `<div class="verdict bad">${icon('x')} ${t('wrong')}<div class="small">${esc(c.msg)}${k ? ' ' + t('extraCase') : ''}</div></div>`;
           const data = k ? `<h4>${t('tables')}</h4>${p.tables.map(tb => schemaTable(tb, p.extra[k - 1][tb.name])).join('')}` : '';
           out.innerHTML = `${data}<div class="diff"><div><h4>${t('yourOutput')}</h4>${resultTable(r.set)}</div><div><h4>${t('expected')}</h4>${resultTable(exp)}</div></div>`;
           return;
         }
       }
-      verdict.innerHTML = `<div class="verdict ok">✅ ${t('accepted')}</div>`;
+      verdict.innerHTML = `<div class="verdict ok">${icon('check')} ${t('accepted')}</div>`;
       out.innerHTML = `<h4>${t('yourOutput')}</h4>${resultTable(runProblem(p, sql).set)}<div class="card explain"><b>${t('concepts')}:</b> ${tr(p.explain)}</div>`;
       if (!progress.solved[p.id]) {
         progress.solved[p.id] = true; saveProgress();
         celebrate();
         const h1 = $('h1', v);
-        if (h1 && !$('.tick', h1)) h1.insertAdjacentHTML('beforeend', ' <span class="tick">✓</span>');
+        if (h1 && !$('.tick', h1)) h1.insertAdjacentHTML('beforeend', ` <span class="tick">${icon('check')}</span>`);
       }
-      if (next) out.insertAdjacentHTML('beforeend', `<a class="btn primary" href="#/problem/${next.id}">${t('next')}: ${next.id}. ${esc(tr(next.title))} →</a>`);
+      if (next) out.insertAdjacentHTML('beforeend', `<a class="btn primary" href="#/problem/${next.id}">${t('next')}: ${next.id}. ${esc(tr(next.title))} ${icon('chevron')}</a>`);
     }
 
     $('#runBtn', v).onclick = doRun;
@@ -528,21 +536,21 @@
     $('#rstBtn', v).onclick = () => { ed.set(starter); out.innerHTML = ''; verdict.innerHTML = ''; };
     $('#hintBtn', v).onclick = () => {
       if (hintsShown >= p.hints.length) { toast(t('noMoreHints')); return; }
-      $('#hints', v).insertAdjacentHTML('beforeend', `<div class="hint">💡 ${t('hint')} ${hintsShown + 1}: ${tr(p.hints[hintsShown])}</div>`);
+      $('#hints', v).insertAdjacentHTML('beforeend', `<div class="hint">${icon('bulb')}<div><b>${t('hint')} ${hintsShown + 1}</b> ${tr(p.hints[hintsShown])}</div></div>`);
       hintsShown++;
     };
     $('#solBtn', v).onclick = () => {
       if ($('#sol', v).innerHTML) return;
       if (!progress.solved[p.id] && hintsShown < p.hints.length && !confirm(t('revealConfirm'))) return;
-      $('#sol', v).innerHTML = `<div class="card solution"><h3>🔑 ${t('solution')}</h3>
+      $('#sol', v).innerHTML = `<div class="card solution"><h3 class="with-icon">${icon('key')} ${t('solution')}</h3>
         <pre class="code">${highlight(p.solution)}</pre><p>${tr(p.explain)}</p>
-        <button class="btn ghost" id="useSol">${t('useSolution')}</button></div>`;
+        <button class="btn ghost" id="useSol">${icon('copy')} ${t('useSolution')}</button></div>`;
       $('#useSol', v).onclick = () => ed.set(p.solution);
     };
   }
 
   function celebrate() {
-    toast('🎉 ' + t('accepted') + '!', 'ok');
+    toast(t('accepted') + '!', 'ok');
     const box = h('<div class="confetti" aria-hidden="true"></div>');
     const colors = ['#FFE600', '#BCE2F6', '#3D8BD9', '#34C38F', '#F5A524'];
     for (let i = 0; i < 40; i++) {
@@ -569,7 +577,7 @@
         </aside>
         <div>
           <div id="ed"></div>
-          <div class="row"><button class="btn primary" id="runBtn">▶ ${t('run')}</button><button class="btn ghost" id="rstBtn">${t('reset')}</button><span class="muted small kbd">${t('shortcut')}</span></div>
+          <div class="row"><button class="btn primary" id="runBtn">${icon('play', 'fill')} ${t('run')}</button><button class="btn ghost" id="rstBtn">${icon('reset')} ${t('reset')}</button><span class="muted small kbd">${t('shortcut')}</span></div>
           <div id="out"></div>
         </div>
       </div>`;
@@ -588,15 +596,210 @@
     });
   }
 
+  // ---------------------------------------------------------------- appearance
+  // Mode picks light or dark (or follows the phone); each side has its own theme.
+  // index.html's prepaint script mirrors applyTheme() so nothing flashes on load.
+  const THEMES = {
+    light: [['classic', '#f6f8fb', '#ffffff', '#2f7fd0'], ['paper', '#f6f1e7', '#fffdf8', '#b4621b'],
+      ['mint', '#eef7f3', '#ffffff', '#0d8466'], ['lavender', '#f5f3fc', '#ffffff', '#6a4fd3']],
+    dark: [['midnight', '#0f141a', '#171e26', '#6cb3f5'], ['oled', '#000000', '#0d0d0d', '#6cb3f5'],
+      ['slate', '#23272f', '#2c313b', '#83b9ec'], ['grape', '#17121f', '#221a2e', '#b89dff']]
+  };
+  const MODES = ['system', 'light', 'dark'];
+  const prefs = Object.assign({ mode: 'system', light: 'classic', dark: 'midnight' }, store.get('prefs', {}));
+  if (!MODES.includes(prefs.mode)) prefs.mode = 'system';
+  if (!THEMES.light.some(x => x[0] === prefs.light)) prefs.light = 'classic';
+  if (!THEMES.dark.some(x => x[0] === prefs.dark)) prefs.dark = 'midnight';
+  const darkMQ = matchMedia('(prefers-color-scheme: dark)');
+
+  function applyTheme() {
+    const side = prefs.mode === 'system' ? (darkMQ.matches ? 'dark' : 'light') : prefs.mode;
+    const name = prefs[side];
+    const root = document.documentElement;
+    root.dataset.theme = side;
+    root.dataset.palette = name;
+    const bg = THEMES[side].find(x => x[0] === name)[1];
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', bg));
+  }
+  function setPref(k, v) { prefs[k] = v; store.set('prefs', prefs); applyTheme(); }
+  darkMQ.addEventListener('change', () => { if (prefs.mode === 'system') applyTheme(); });
+  applyTheme();
+
+  // ---------------------------------------------------------------- install
+  // Chromium offers a native prompt; iOS Safari has none, so explain "Add to Home Screen" instead.
+  let deferredPrompt = null;
+  const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; if (currentRoute === 'settings') render(); });
+  window.addEventListener('appinstalled', () => { deferredPrompt = null; if (currentRoute === 'settings') render(); });
+  async function install() {
+    if (!deferredPrompt) { showIOSInstall(); return; }
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    render();
+  }
+  function showIOSInstall() {
+    const m = h(`<div class="modal" role="dialog" aria-modal="true"><div class="modal-card card">
+      <h2>${t('installApp')}</h2>${STR.iosInstall[lang]}
+      <div class="right"><button class="btn primary">${t('close')}</button></div></div></div>`);
+    document.body.appendChild(m);
+    $('button', m).onclick = () => m.remove();
+    m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+  }
+
+  // ---------------------------------------------------------------- updates (APP-STANDARDS §1–2)
+  const RELEASES = window.SQL_RELEASES;
+  const APP_URL = 'https://bryanwoo988.github.io/Learn-SQL/';
+  const firstLaunch = !store.get('launched', false) && store.get('progress', null) === null;
+  store.set('launched', true);
+  window.WhatsNew.init({
+    version: RELEASES[0].v, releases: RELEASES, key: 'sqlsyntax.seenVersion',
+    lang: () => lang, isNewUser: () => firstLaunch
+  });
+
+  let swReg = null, reloading = false;
+  // The new service worker waits until the reader agrees; then it takes over and the page reloads once.
+  function applyUpdate() {
+    const w = swReg && swReg.waiting;
+    if (!w) { location.reload(); return; }
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!reloading) { reloading = true; location.reload(); }
+    });
+    w.postMessage({ type: 'SKIP_WAITING' });
+  }
+  function track(w) {
+    if (!w) return;
+    w.addEventListener('statechange', () => {
+      if (w.state !== 'installed') return;
+      if (navigator.serviceWorker.controller) window.WhatsNew.offerUpdate(applyUpdate);
+      else toast(t('offlineReady'));
+    });
+  }
+  async function checkForUpdate(manual) {
+    if (!swReg) { if (manual) toast(t('upToDate')); return; }
+    try { await swReg.update(); } catch (e) { /* offline: try later */ }
+    if (swReg.waiting && navigator.serviceWorker.controller) window.WhatsNew.offerUpdate(applyUpdate);
+    else if (manual) toast(swReg.installing ? t('downloading') : t('upToDate'));
+  }
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').then(reg => {
+        swReg = reg;
+        if (reg.waiting && navigator.serviceWorker.controller) window.WhatsNew.offerUpdate(applyUpdate);
+        track(reg.installing);
+        reg.addEventListener('updatefound', () => track(reg.installing));
+        // Home-screen apps are resumed far more often than relaunched: check on return and every 15 minutes.
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(false); });
+        setInterval(() => checkForUpdate(false), 15 * 60e3);
+      }).catch(() => { /* offline support unavailable */ });
+    });
+  }
+
+  // ---------------------------------------------------------------- settings
+  const segmented = (opts, cur, attr) => `<div class="seg wide" role="radiogroup">${opts.map(([v, label, ic]) =>
+    `<button type="button" role="radio" aria-checked="${v === cur}" data-${attr}="${v}" class="${v === cur ? 'on' : ''}">${ic ? icon(ic) : ''}${label}</button>`).join('')}</div>`;
+  const swatches = side => `<div class="swatches">${THEMES[side].map(([name, bg, surf, acc]) =>
+    `<button type="button" class="swatch ${prefs[side] === name ? 'on' : ''}" data-side="${side}" data-name="${name}" aria-pressed="${prefs[side] === name}">
+      <span class="sw-prev" style="background:${bg}"><span class="sw-card" style="background:${surf}"><i style="background:${acc}"></i><b></b></span></span>
+      <span class="sw-name">${t('th_' + name)}</span></button>`).join('')}</div>`;
+
+  function renderSettings() {
+    const v = view();
+    const installRow = standalone()
+      ? `<p class="muted small">${t('installedNote')}</p>`
+      : (deferredPrompt || isIOS)
+        ? `<p class="muted small">${t('installHint')}</p><button class="btn primary" id="installBtn">${icon('download')} ${t('installApp')}</button>`
+        : `<p class="muted small">${t('installHint')}</p>`;
+    v.innerHTML = `<h1>${t('settings')}</h1>
+      <section class="card setgroup">
+        <h2 class="set-h">${icon('globe')} ${t('language')}</h2>
+        ${segmented([['en', 'English'], ['zh', '中文']], lang, 'lang')}
+      </section>
+      <section class="card setgroup">
+        <h2 class="set-h">${icon('palette')} ${t('appearance')}</h2>
+        <h3>${t('mode')}</h3>
+        ${segmented([['system', t('modeSystem'), 'monitor'], ['light', t('modeLight'), 'sun'], ['dark', t('modeDark'), 'moon']], prefs.mode, 'mode')}
+        <p class="muted small">${t('themeNote')}</p>
+        <h3>${t('lightTheme')}</h3>${swatches('light')}
+        <h3>${t('darkTheme')}</h3>${swatches('dark')}
+      </section>
+      <section class="card setgroup">
+        <h2 class="set-h">${icon('share')} ${t('share')}</h2>
+        <div class="share-box">
+          <div class="qr" id="qr" aria-label="${esc(APP_URL)}"></div>
+          <div class="share-side">
+            <p class="muted small">${t('shareHint')}</p>
+            <p class="share-url">${esc(APP_URL)}</p>
+            <div class="row">
+              ${navigator.share ? `<button class="btn primary" id="shareBtn">${icon('share')} ${t('shareBtn')}</button>` : ''}
+              <button class="btn ${navigator.share ? 'ghost' : 'primary'}" id="copyBtn">${icon('copy')} ${t('copyLink')}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="card setgroup">
+        <h2 class="set-h">${icon('download')} ${t('installApp')}</h2>
+        ${installRow}
+      </section>
+      <section class="card setgroup">
+        <h2 class="set-h">${icon('info')} ${t('info')}</h2>
+        <dl class="keyval">
+          <dt>${t('version')}</dt><dd>${esc(window.WhatsNew.label(RELEASES))}</dd>
+          <dt>${t('offline')}</dt><dd id="offState">…</dd>
+        </dl>
+        <div class="row">
+          <button class="btn" id="histBtn">${icon('history')} ${t('history')}</button>
+          <button class="btn" id="updBtn">${icon('refresh')} ${t('checkUpdate')}</button>
+          <button class="btn ghost" id="aboutBtn">${icon('info')} ${t('about')}</button>
+        </div>
+      </section>
+      <section class="card setgroup">
+        <h2 class="set-h">${icon('trash')} ${t('progressData')}</h2>
+        <button class="btn danger" id="resetBtn">${icon('trash')} ${t('resetProgress')}</button>
+      </section>`;
+
+    $('#qr', v).appendChild(window.QR.toSVG(APP_URL, { quiet: 4, dark: '#111827', light: '#ffffff' }));
+    v.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { lang = b.dataset.lang; store.set('lang', lang); render(); });
+    v.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { setPref('mode', b.dataset.mode); render(); });
+    v.querySelectorAll('.swatch').forEach(b => b.onclick = () => {
+      // Picking a theme previews it right away, even if the mode shows the other side.
+      if (prefs.mode !== 'system' && prefs.mode !== b.dataset.side) prefs.mode = b.dataset.side;
+      setPref(b.dataset.side, b.dataset.name); render();
+    });
+    if ($('#shareBtn', v)) $('#shareBtn', v).onclick = () => navigator.share({ title: t('appName'), url: APP_URL }).catch(() => {});
+    $('#copyBtn', v).onclick = async () => {
+      try { await navigator.clipboard.writeText(APP_URL); toast(t('copied')); }
+      catch (e) {
+        const r = document.createRange(); r.selectNodeContents($('.share-url', v));
+        getSelection().removeAllRanges(); getSelection().addRange(r);
+      }
+    };
+    if ($('#installBtn', v)) $('#installBtn', v).onclick = install;
+    $('#histBtn', v).onclick = () => window.WhatsNew.history();
+    $('#updBtn', v).onclick = () => checkForUpdate(true);
+    $('#aboutBtn', v).onclick = showAbout;
+    $('#resetBtn', v).onclick = () => {
+      if (!confirm(t('resetConfirm'))) return;
+      progress.solved = {}; progress.lessons = {}; progress.drafts = {};
+      saveProgress(); toast(t('resetProgress') + ' ✓');
+    };
+    const off = $('#offState', v);
+    (window.caches ? caches.keys() : Promise.resolve([]))
+      .then(keys => { const ok = keys.some(k => k.startsWith('sql-syntax-')) && !!navigator.serviceWorker?.controller; off.textContent = t(ok ? 'offlineYes' : 'offlineNo'); off.className = ok ? 'good' : 'muted'; })
+      .catch(() => { off.textContent = t('offlineNo'); });
+  }
+
   // ---------------------------------------------------------------- router & chrome
+  let currentRoute = '';
+  document.querySelectorAll('[data-icon]').forEach(el => el.insertAdjacentHTML('afterbegin', icon(el.dataset.icon)));
+
   function applyChrome() {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
     document.title = t('appName');
     $('#brandName').textContent = t('appName');
-    $('#langBtn').textContent = lang === 'zh' ? 'EN' : '中文';
-    $('#langBtn').setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切换到中文');
+    $('#settingsBtn').setAttribute('aria-label', t('settings'));
     document.querySelectorAll('[data-nav]').forEach(a => { a.querySelector('span').textContent = t(a.dataset.nav); });
-    $('#installBtn').textContent = t('install');
   }
 
   function render() {
@@ -607,66 +810,23 @@
     }
     const parts = (location.hash.replace(/^#\/?/, '') || '').split('/');
     const route = parts[0] || '';
+    currentRoute = route;
     document.querySelectorAll('[data-nav]').forEach(a => {
       const r = a.getAttribute('href').replace('#/', '');
-      a.classList.toggle('on', r === route || (r === 'practice' && route === 'problem'));
+      const on = r === route || (r === 'practice' && route === 'problem');
+      a.classList.toggle('on', on);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
+    $('#settingsBtn').classList.toggle('on', route === 'settings');
     if (route === 'learn') parts[1] ? renderLesson(parts[1]) : renderLearnIndex();
     else if (route === 'practice') renderPractice(parts[1]);
     else if (route === 'problem') renderProblem(+parts[1]);
     else if (route === 'playground') renderPlayground();
+    else if (route === 'settings') renderSettings();
     else renderHome();
   }
 
   window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
-  $('#langBtn').onclick = () => { lang = lang === 'zh' ? 'en' : 'zh'; store.set('lang', lang); render(); };
-
-  // theme
-  const root = document.documentElement;
-  const savedTheme = store.get('theme', null);
-  if (savedTheme) root.dataset.theme = savedTheme;
-  $('#themeBtn').onclick = () => {
-    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    root.dataset.theme = dark ? 'light' : 'dark';
-    store.set('theme', root.dataset.theme);
-  };
-
-  // install prompt
-  // Chromium offers a native prompt; iOS Safari has none, so explain "Add to Home Screen" instead.
-  let deferredPrompt = null;
-  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  $('#installBtn').hidden = standalone || !isIOS;
-  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('#installBtn').hidden = false; });
-  window.addEventListener('appinstalled', () => { $('#installBtn').hidden = true; });
-  $('#installBtn').onclick = async () => {
-    if (!deferredPrompt) { showIOSInstall(); return; }
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    $('#installBtn').hidden = true;
-  };
-  function showIOSInstall() {
-    const m = h(`<div class="modal" role="dialog" aria-modal="true"><div class="modal-card card">
-      <h2>${t('install')} ${t('appName')}</h2>${STR.iosInstall[lang]}
-      <div class="right"><button class="btn primary">${t('close')}</button></div></div></div>`);
-    document.body.appendChild(m);
-    $('button', m).onclick = () => m.remove();
-    m.addEventListener('click', e => { if (e.target === m) m.remove(); });
-  }
-
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').then(reg => {
-        if (!navigator.serviceWorker.controller) {
-          reg.addEventListener('updatefound', () => {
-            const w = reg.installing;
-            if (w) w.addEventListener('statechange', () => { if (w.state === 'activated') toast('✈️ ' + t('offlineReady')); });
-          });
-        }
-      }).catch(() => { /* offline support unavailable */ });
-    });
-  }
 
   render();
   enginePromise.then(render).catch(() => { view().innerHTML = `<div class="err">${t('engineFail')}</div>`; });

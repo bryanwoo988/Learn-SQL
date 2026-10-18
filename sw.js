@@ -1,11 +1,24 @@
-/* Offline support: precache the app shell, serve cache-first, refresh in the background. */
-const CACHE = 'sql-syntax-v2';
+/* Offline service worker.
+
+   VERSION must equal the newest entry in js/releases.js (tools/check-release.mjs
+   checks it): changing it is what makes installed copies download the new build.
+   A new build waits until the reader taps "Update now" (APP-STANDARDS §2).
+
+   Every app on bryanwoo988.github.io shares one cache storage, so only caches
+   with this app's prefix are ever deleted (APP-STANDARDS §4). */
+const VERSION = '1.1.0';
+const PREFIX = 'sql-syntax-';
+const CACHE = PREFIX + VERSION;
 const ASSETS = [
   './',
   'index.html',
   'manifest.webmanifest',
   'favicon.ico',
   'css/style.css',
+  'js/icons.js',
+  'js/qrcode.js',
+  'js/whatsnew.js',
+  'js/releases.js',
   'js/sqlcompat.js',
   'js/problems.js',
   'js/lessons.js',
@@ -20,31 +33,44 @@ const ASSETS = [
   'icons/maskable-512.png'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+self.addEventListener('install', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // Fetched past the HTTP cache, one by one: a single failure must not block the rest.
+    const results = await Promise.allSettled(ASSETS.map(url => cache.add(new Request(url, { cache: 'reload' }))));
+    const failed = results.map((r, i) => (r.status === 'rejected' ? ASSETS[i] : null)).filter(Boolean);
+    if (failed.length) console.warn('[sw] could not precache:', failed);
+  })());
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
-self.addEventListener('fetch', e => {
-  const req = e.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
-  e.respondWith(
-    caches.match(req, { ignoreSearch: true }).then(hit => {
-      const fresh = fetch(req).then(res => {
-        if (res.ok) {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(req, copy));
-        }
-        return res;
-      }).catch(() => hit || (req.mode === 'navigate' ? caches.match('index.html') : undefined));
-      return hit || fresh;
-    })
-  );
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const names = await caches.keys();
+    await Promise.all(names.filter(n => n.startsWith(PREFIX) && n !== CACHE).map(n => caches.delete(n)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  if (req.mode === 'navigate') {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE);
+      const hit = await cache.match('index.html');
+      if (hit) return hit;
+      try { return await fetch(req); } catch (e) { return new Response('Offline', { status: 503 }); }
+    })());
+    return;
+  }
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    const hit = await cache.match(req, { ignoreSearch: true });
+    if (hit) return hit;
+    try { return await fetch(req); } catch (e) { return new Response('', { status: 504 }); }
+  })());
 });

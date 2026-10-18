@@ -10,13 +10,13 @@
   });
 
   const SECTIONS = [
-    { id: 'select', title: T('Select', '查询基础'), icon: '🔎' },
-    { id: 'joins', title: T('Basic Joins', '基础连接'), icon: '🔗' },
-    { id: 'aggregate', title: T('Basic Aggregate Functions', '基础聚合函数'), icon: '∑' },
-    { id: 'grouping', title: T('Sorting and Grouping', '排序与分组'), icon: '🗂️' },
-    { id: 'advanced', title: T('Advanced Select and Joins', '高级查询与连接'), icon: '🧩' },
-    { id: 'subqueries', title: T('Subqueries', '子查询'), icon: '🪆' },
-    { id: 'strings', title: T('Advanced String Functions / Regex / Clause', '高级字符串函数 / 正则 / 子句'), icon: '🔤' }
+    { id: 'select', title: T('Select', '查询基础'), icon: 'search' },
+    { id: 'joins', title: T('Basic Joins', '基础连接'), icon: 'link' },
+    { id: 'aggregate', title: T('Basic Aggregate Functions', '基础聚合函数'), icon: 'sigma' },
+    { id: 'grouping', title: T('Sorting and Grouping', '排序与分组'), icon: 'sort' },
+    { id: 'advanced', title: T('Advanced Select and Joins', '高级查询与连接'), icon: 'blocks' },
+    { id: 'subqueries', title: T('Subqueries', '子查询'), icon: 'nested' },
+    { id: 'strings', title: T('Advanced String Functions / Regex / Clause', '高级字符串函数 / 正则 / 子句'), icon: 'text' }
   ];
 
   const P = [];
